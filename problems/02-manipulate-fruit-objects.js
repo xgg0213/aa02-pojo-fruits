@@ -10,8 +10,13 @@ console.log(addKeyAndValueToAll(fruits, "inStock", true));
 
 function addKeyAndValueToAll(array, key, value) {
     // Your code here 
+    let newArr = [];
+    array.forEach((item) => {
+        let { ...newItem } = { ...item, ...{ [key]: value } };
+        newArr.push(newItem);
+    })
+    return newArr;
 }
-
 /* 08. `addKeyAndValueToOne()` - Return object at the given index array, adding the given key and
 value to that fruit object
 
@@ -21,6 +26,9 @@ console.log(addKeyAndValueToOne(fruits, "color", "red", 1));
 
 function addKeyAndValueToOne(array, key, value, index) {
     // Your code here 
+    let item = array[index];
+    let newItem = { ...item, ...{ [key]: value } }
+    return newItem;
 }
 
 /* 09. `updateKeyName()` - Change the old key name to the new key name in all
@@ -33,6 +41,15 @@ console.log(updateKeyName(fruits, "nutritions", "nutrition"));
 
 function updateKeyName(array, oldKey, newKey) {
     // Your code here 
+    array.forEach((item) => {
+        for (let key in item) {
+            if (key === oldKey) {
+                item[newKey] = item[oldKey];
+                delete item[oldKey];
+            }
+        }
+    })
+    return array;
 }
 
 /* 10. `updateIdValues()` - Change all of the "id" values to six-character
@@ -50,6 +67,25 @@ console.log(updateIdValues(fruits));
 
 function updateIdValues(array) {
     // Your code here 
+    let idArr = [];
+
+    array.forEach((item) => {
+        idArr.push(item.id.toString());
+    });
+
+    // let newIdArr = [];
+    idArr.forEach((el,i) => {
+        const initialLength = el.length;
+        if (initialLength < 6) {
+            for (let i = 1; i <= 6 - initialLength; i++) {
+                el = '0'+ el;
+                // console.log(el);
+            }
+        }
+        // newIdArr.push(el);
+        idArr[i] = el
+    })
+    return idArr;
 }
 
 /* 11. `deleteKeysandValues()` - Delete the keyToDelete from the nutritions
@@ -61,8 +97,18 @@ console.log(deleteKeysAndValues(fruits, "sugar"));
 
 function deleteKeysAndValues(array, keyToDelete) {
     // Your code here 
+    array.forEach((item) => {
+        for (let key in item) {
+            if (typeof item[key] === 'object') {
+                // console.log(item[key]keyToDelete);
+                delete item[key][keyToDelete];
+            }
+        }
+    })
+    return array;
 }
+
 
 /**************DO NOT MODIFY ANYTHING UNDER THIS  LINE*****************/
 
-module.exports = [ addKeyAndValueToAll, addKeyAndValueToOne, updateKeyName, updateIdValues, deleteKeysAndValues ];
+module.exports = [addKeyAndValueToAll, addKeyAndValueToOne, updateKeyName, updateIdValues, deleteKeysAndValues];
